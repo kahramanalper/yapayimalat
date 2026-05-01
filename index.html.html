@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yapay İmalat — AI Destekli Üretim Yönetimi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1C1F2E;
+  --ink-2: #5A6070;
+  --ink-3: #9BA3B2;
+  --bg: #F7F6F2;
+  --bg-2: #EFEDE8;
+  --white: #FFFFFF;
+  --accent: #2B5BE0;
+  --accent-soft: #E8EDFC;
+  --accent-mid: #B8C8F8;
+  --gold: #C8A96E;
+  --gold-soft: #F5EDD8;
+  --green: #2D7A5F;
+  --green-soft: #E0F0E8;
+  --border: rgba(28,31,46,0.1);
+  --border-soft: rgba(28,31,46,0.06);
+  --radius: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 2px 12px rgba(28,31,46,0.06);
+  --shadow-md: 0 8px 32px rgba(28,31,46,0.1);
+  --shadow-lg: 0 20px 60px rgba(28,31,46,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--ink); overflow-x: hidden; }
+
+/* TYPOGRAPHY */
+.display { font-family: 'Nunito', sans-serif; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 6%; height: 68px;
+  background: rgba(247,246,242,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-soft);
+}
+.logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-svg { width: 36px; height: 36px; }
+.logo-text { font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
+.logo-text em { font-style: normal; color: var(--accent); }
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-links a { font-size: 14px; color: var(--ink-2); text-decoration: none; font-weight: 400; transition: color 0.2s; letter-spacing: 0.1px; }
+.nav-links a:hover { color: var(--ink); }
+.nav-cta { background: var(--ink) !important; color: var(--bg) !important; padding: 9px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: opacity 0.2s !important; }
+.nav-cta:hover { opacity: 0.85 !important; }
+
+/* HERO */
+.hero {
+  padding: 100px 6% 90px;
+  background: var(--bg);
+  position: relative; overflow: hidden;
+}
+.hero-grid-bg {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+  background-image: linear-gradient(var(--border-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.hero-glow {
+  position: absolute; top: -200px; right: -100px; width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(43,91,224,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; position: relative; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+.hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: breathe 2.5s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+.hero-eyebrow span { font-size: 12px; font-weight: 500; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; }
+.hero h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(34px, 4.5vw, 58px);
+  font-weight: 700; line-height: 1.15;
+  letter-spacing: -0.3px; margin-bottom: 24px;
+  color: var(--ink);
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub { font-size: 16px; color: var(--ink-2); line-height: 1.75; margin-bottom: 40px; font-weight: 300; max-width: 440px; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
+.btn-dark { background: var(--ink); color: var(--bg); padding: 14px 30px; border-radius: 10px; font-size: 15px; font-weight: 500; border: none; cursor: pointer; font-family: 'Outfit', sans-serif; transition: opacity 0.2s; text-decoration: none; display: inline-block; letter-spacing: 0.1px; }
+.btn-dark:hover { opacity: 0.82; }
+.btn-ghost { background: transparent; color: var(--ink); padding: 14px 30px; border-radius: 10px; font-size: 15px; font-weight: 400; border: 1px solid var(--border); cursor: pointer; font-family: 'Outfit', sans-serif; transition: border-color 0.2s, background 0.2s; text-decoration: none; display: inline-block; }
+.btn-ghost:hover { border-color: var(--ink-2); background: var(--bg-2); }
+.hero-badges { display: flex; gap: 24px; flex-wrap: wrap; }
+.hero-badge-item { display: flex; align-items: center; gap: 8px; }
+.hero-badge-num { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 700; color: var(--ink); }
+.hero-badge-label { font-size: 12px; color: var(--ink-3); line-height: 1.4; font-weight: 300; }
+.hero-divider { width: 1px; height: 32px; background: var(--border); }
+
+/* LIVE DEMO PANEL */
+.demo-panel {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.demo-topbar {
+  padding: 14px 18px;
+  background: var(--ink);
+  display: flex; align-items: center; gap: 10px;
+}
+.demo-dots { display: flex; gap: 6px; }
+.demo-dot-btn { width: 10px; height: 10px; border-radius: 50%; }
+.demo-dot-btn.r { background: #FF6B6B; }
+.demo-dot-btn.y { background: #FFD93D; }
+.demo-dot-btn.g { background: #6BCB77; }
+.demo-tab-label { flex: 1; text-align: center; font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 400; letter-spacing: 0.5px; }
+.demo-live-badge { font-size: 10px; background: rgba(107,203,119,0.2); color: #6BCB77; padding: 3px 8px; border-radius: 6px; font-weight: 500; letter-spacing: 0.5px; }
+
+/* HOW IT WORKS TABS */
+.how-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
+.how-tab { flex: 1; padding: 10px 8px; font-size: 11px; font-weight: 500; color: var(--ink-3); cursor: pointer; text-align: center; border: none; background: transparent; font-family: 'Outfit', sans-serif; transition: all 0.2s; border-bottom: 2px solid transparent; letter-spacing: 0.3px; }
+.how-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--white); }
+
+.demo-content { padding: 20px; background: #FAFAF8; min-height: 260px; }
+
+/* CHAT VIEW */
+.chat-msgs { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; max-height: 220px; overflow-y: auto; }
+.cmsg { max-width: 86%; }
+.cmsg.user { align-self: flex-end; }
+.cmsg.ai { align-self: flex-start; }
+.cmsg-lbl { font-size: 10px; color: var(--ink-3); margin-bottom: 4px; font-weight: 500; letter-spacing: 0.3px; }
+.cmsg-lbl.r { text-align: right; }
+.cbubble-user { background: var(--accent); color: white; padding: 9px 14px; border-radius: 14px 14px 3px 14px; font-size: 12.5px; line-height: 1.5; }
+.cbubble-ai { background: white; border: 1px solid var(--border); color: var(--ink); padding: 9px 14px; border-radius: 14px 14px 14px 3px; font-size: 12.5px; line-height: 1.6; }
+.chat-input-row { display: flex; gap: 8px; }
+.chat-inp { flex: 1; padding: 9px 13px; border: 1px solid var(--border); border-radius: 8px; font-size: 12.5px; color: var(--ink); background: white; outline: none; font-family: 'Outfit', sans-serif; }
+.chat-inp:focus { border-color: var(--accent); }
+.chat-send { background: var(--accent); color: white; border: none; padding: 9px 16px; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 500; }
+
+/* WALKTHROUGH VIEW */
+.walkthrough { display: none; }
+.wk-step { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border-soft); }
+.wk-step:last-child { border-bottom: none; }
+.wk-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.wk-title { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.wk-desc { font-size: 12px; color: var(--ink-2); line-height: 1.5; font-weight: 300; }
+
+/* TYPING INDICATOR */
+.typing { display: none; align-self: flex-start; }
+.typing-dots { display: flex; gap: 4px; background: white; border: 1px solid var(--border); padding: 10px 14px; border-radius: 14px 14px 14px 3px; }
+.typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); animation: tdot 1.2s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tdot { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-4px);opacity:1} }
+
+/* SECTIONS */
+section { padding: 90px 6%; }
+.section-inner { max-width: 1120px; margin: 0 auto; }
+.section-eyebrow { font-size: 11px; font-weight: 500; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+.section-title { font-family: 'Nunito', sans-serif; font-size: clamp(26px, 3vw, 40px); font-weight: 700; line-height: 1.2; letter-spacing: -0.2px; margin-bottom: 14px; }
+.section-sub { font-size: 15px; color: var(--ink-2); line-height: 1.7; font-weight: 300; max-width: 500px; }
+
+/* CAPABILITIES */
+.cap-bg { background: var(--bg-2); }
+.cap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 10px; }
+.cap-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 16px; cursor: pointer;
+  transition: all 0.2s; box-shadow: var(--shadow-sm);
+}
+.cap-card:hover { border-color: var(--accent-mid); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.cap-card.active { border: 1.5px solid var(--accent); box-shadow: 0 4px 24px rgba(43,91,224,0.12); }
+.cap-icon-wrap { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.cap-icon-wrap svg { width: 17px; height: 17px; fill: none; stroke-width: 1.5; }
+.cap-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+.cap-short { font-size: 11px; color: var(--ink-3); line-height: 1.4; font-weight: 300; }
+.cap-new { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 6px; margin-left: 4px; letter-spacing: 0.3px; vertical-align: middle; }
+.cap-detail-panel {
+  margin-top: 16px; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 32px; display: none;
+  box-shadow: var(--shadow-sm);
+}
+.cap-detail-panel.show { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.cap-detail-name { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 700; color: var(--ink); margin-bottom: 20px; }
+.cap-items { display: flex; flex-direction: column; gap: 10px; }
+.cap-item { display: flex; gap: 10px; font-size: 13.5px; color: var(--ink-2); line-height: 1.55; font-weight: 300; }
+.cap-bullet-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+.cap-convo-wrap { display: flex; flex-direction: column; gap: 12px; }
+.cap-convo-lbl { font-size: 10px; color: var(--ink-3); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.cap-msg-u { background: var(--accent); color: white; padding: 10px 14px; border-radius: 12px 12px 3px 12px; font-size: 13px; line-height: 1.5; align-self: flex-end; max-width: 92%; }
+.cap-msg-a { background: var(--bg); border: 1px solid var(--border); color: var(--ink); padding: 10px 14px; border-radius: 12px 12px 12px 3px; font-size: 13px; line-height: 1.6; font-weight: 300; max-width: 92%; }
+.cap-row { display: flex; flex-direction: column; }
+.cap-row.u { align-items: flex-end; }
+
+/* PRICING */
+.pricing-bg { background: var(--bg); }
+.price-toggle-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 48px; }
+.pt-lbl { font-size: 14px; color: var(--ink-3); font-weight: 400; }
+.pt-lbl.on { color: var(--ink); font-weight: 500; }
+.pt-toggle { width: 48px; height: 26px; background: var(--ink); border-radius: 13px; cursor: pointer; position: relative; }
+.pt-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.pt-toggle.on .pt-knob { left: 25px; }
+.pt-save { background: var(--green-soft); color: var(--green); font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 980px; margin: 0 auto; }
+.pc {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 36px 30px;
+  position: relative; box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+}
+.pc.featured {
+  background: var(--ink); border-color: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+.pc-badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: var(--ink);
+  font-size: 10px; font-weight: 600; padding: 3px 16px;
+  border-radius: 20px; white-space: nowrap; letter-spacing: 0.5px;
+}
+.pc-name { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.pc.featured .pc-name { color: var(--bg); }
+.pc-desc { font-size: 13px; color: var(--ink-3); margin-bottom: 28px; font-weight: 300; }
+.pc.featured .pc-desc { color: rgba(247,246,242,0.5); }
+.pc-amount {
+  font-family: 'Nunito', sans-serif;
+  font-size: 48px; font-weight: 800; line-height: 1;
+  color: var(--ink); margin-bottom: 4px; letter-spacing: -1px;
+}
+.pc.featured .pc-amount { color: var(--bg); }
+.pc-amount.cta-style { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; }
+.pc-period { font-size: 13px; color: var(--ink-3); margin-bottom: 10px; font-weight: 300; }
+.pc.featured .pc-period { color: rgba(247,246,242,0.5); }
+.pc-yearly { background: var(--green-soft); border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; display: none; }
+.pc.featured .pc-yearly { background: rgba(45,122,95,0.25); }
+.pc-yearly.show { display: block; }
+.pc-yearly-total { font-size: 13px; font-weight: 500; color: var(--green); }
+.pc.featured .pc-yearly-total { color: #7ECFB0; }
+.pc-yearly-save { font-size: 12px; color: var(--green); margin-top: 3px; font-weight: 300; }
+.pc.featured .pc-yearly-save { color: #7ECFB0; }
+.pc-divider { height: 1px; background: var(--border); margin-bottom: 22px; }
+.pc.featured .pc-divider { background: rgba(247,246,242,0.1); }
+.pc-feats { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; flex: 1; }
+.pc-feat { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; font-weight: 300; }
+.pc.featured .pc-feat { color: rgba(247,246,242,0.75); }
+.pc-check { color: var(--accent); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.pc.featured .pc-check { color: var(--gold); }
+.pc-check.off { color: var(--ink-3); }
+.pc-off { color: var(--ink-3) !important; }
+.pc.featured .pc-off { color: rgba(247,246,242,0.3) !important; }
+.pc-btn { width: 100%; padding: 13px; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; letter-spacing: 0.2px; }
+.pc-btn-dark { background: var(--ink); color: var(--bg); border: none; }
+.pc-btn-dark:hover { opacity: 0.85; }
+.pc-btn-light { background: var(--bg); color: var(--ink); border: none; }
+.pc-btn-light:hover { background: var(--bg-2); }
+.pc-btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+.pc-btn-ghost:hover { border-color: var(--ink-2); background: var(--bg); }
+.price-note { text-align: center; font-size: 13px; color: var(--ink-3); margin-top: 28px; font-weight: 300; }
+
+/* CONTACT */
+.contact-bg { background: var(--bg-2); }
+.ctabs { display: flex; gap: 8px; margin-bottom: 28px; }
+.ctab { padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 400; cursor: pointer; border: 1px solid var(--border); background: var(--white); color: var(--ink-2); font-family: 'Outfit', sans-serif; transition: all 0.15s; }
+.ctab.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.cform-wrap { max-width: 580px; display: none; }
+.cform-wrap.show { display: block; }
+.cform-note { font-size: 13px; color: var(--ink-2); padding: 14px 18px; background: var(--white); border-radius: var(--radius); border-left: 2px solid var(--accent); margin-bottom: 22px; font-weight: 300; line-height: 1.6; }
+.crow2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cfield { margin-bottom: 14px; }
+.cfield label { display: block; font-size: 12px; font-weight: 500; color: var(--ink-2); margin-bottom: 6px; letter-spacing: 0.2px; }
+.cfield input, .cfield select, .cfield textarea {
+  width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+  border-radius: 10px; font-size: 14px; color: var(--ink);
+  background: var(--white); outline: none; font-family: 'Outfit', sans-serif;
+  transition: border-color 0.2s; font-weight: 300;
+}
+.cfield input:focus, .cfield select:focus, .cfield textarea:focus { border-color: var(--accent); }
+.cfield textarea { resize: vertical; min-height: 90px; }
+.cfield select { appearance: none; cursor: pointer; }
+.csubmit { width: 100%; padding: 13px; background: var(--ink); color: var(--bg); border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; }
+.csubmit:hover { opacity: 0.85; }
+.csuccess { display: none; text-align: center; padding: 48px 20px; background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); }
+.csuccess-icon { font-size: 40px; margin-bottom: 16px; }
+.csuccess h3 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+.csuccess p { font-size: 14px; color: var(--ink-2); line-height: 1.7; font-weight: 300; }
+.cinfo-cards { display: flex; flex-direction: column; gap: 12px; max-width: 480px; }
+.cinfo-card { display: flex; align-items: flex-start; gap: 16px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+.cinfo-icon { width: 38px; height: 38px; border-radius: 8px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cinfo-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+.cinfo-lbl { font-size: 10px; color: var(--ink-3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+.cinfo-val { font-size: 14px; color: var(--ink); font-weight: 400; line-height: 1.5; }
+.cinfo-val a { color: var(--accent); text-decoration: none; }
+
+/* FOOTER */
+footer { padding: 32px 6%; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: var(--bg); }
+.footer-logo { font-size: 15px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.footer-logo em { color: var(--accent); font-style: normal; }
+.footer-copy { font-size: 13px; color: var(--ink-3); font-weight: 300; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+.hero-inner > * { animation: fadeUp 0.7s ease both; }
+.hero-inner > *:nth-child(2) { animation-delay: 0.15s; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 50px; }
+  .price-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+  .cap-detail-panel.show { grid-template-columns: 1fr; }
+  .crow2 { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo-wrap" href="#">
+    <!-- Fabrika + AI logosu -->
+    <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="9" fill="#1C1F2E"/>
+      <!-- Fabrika binası -->
+      <rect x="6" y="18" width="24" height="12" rx="1" fill="none" stroke="#F7F6F2" stroke-width="1.2"/>
+      <!-- Baca x2 -->
+      <rect x="9" y="12" width="4" height="7" rx="1" fill="none" stroke="#F7F6F2" stroke-width="1.2"/>
+      <rect x="16" y="14" width="4" height="5" rx="1" fill="none" stroke="#F7F6F2" stroke-width="1.2"/>
+      <!-- Duman / AI dalgası -->
+      <path d="M10 10 Q11 8 12 10 Q13 12 14 10" stroke="#2B5BE0" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+      <path d="M17 12 Q18 10.5 19 12" stroke="#2B5BE0" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+      <!-- Kapı -->
+      <rect x="15" y="22" width="6" height="8" rx="1" fill="#2B5BE0" opacity="0.9"/>
+      <!-- Pencere -->
+      <rect x="8" y="21" width="4" height="3" rx="0.5" fill="#2B5BE0" opacity="0.5"/>
+      <rect x="24" y="21" width="4" height="3" rx="0.5" fill="#2B5BE0" opacity="0.5"/>
+    </svg>
+    <span class="logo-text">yapay<em>imalat</em></span>
+  </a>
+  <div class="nav-links">
+    <a href="#nasil">Nasıl Çalışır?</a>
+    <a href="#ozellikler">Özellikler</a>
+    <a href="#fiyatlar">Fiyatlar</a>
+    <a href="#iletisim">İletişim</a>
+    <a href="#iletisim" class="nav-cta">Ücretsiz Dene</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">
+        <div class="hero-dot"></div>
+        <span>Yapay Zeka Destekli ERP</span>
+      </div>
+      <h1>Fabrikayı yönetmek<br>için <em>sadece söyle</em></h1>
+      <p class="hero-sub">Satın alma, imalat, kalite, depo, montaj — hepsini asistana söyle, o halleder. Tıklamak yok, menü yok.</p>
+      <div class="hero-btns">
+        <a href="#iletisim" class="btn-dark">Ücretsiz 15 Gün Dene</a>
+        <a href="#nasil" class="btn-ghost">Nasıl çalışır?</a>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge-item">
+          <span class="hero-badge-num">14</span>
+          <span class="hero-badge-label">Modül</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-badge-item">
+          <span class="hero-badge-num">%85</span>
+          <span class="hero-badge-label">Kar marjı</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-badge-item">
+          <span class="hero-badge-num">15 gün</span>
+          <span class="hero-badge-label">Ücretsiz deneme</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE DEMO PANEL -->
+    <div class="demo-panel" id="nasil" style="overflow:hidden;border-radius:var(--radius-lg);background:#1C1F2E;">
+      <div id="demoShellInner"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="cap-bg" id="ozellikler">
+  <div class="section-inner">
+    <div style="margin-bottom:48px">
+      <div class="section-eyebrow">Ne Yapabilir?</div>
+      <h2 class="section-title">14 modül, tek asistan</h2>
+      <p class="section-sub">Bir karta tıklayın — asistanın o bölümde neler yaptığını görün</p>
+    </div>
+    <div class="cap-grid" id="capGrid"></div>
+    <div class="cap-detail-panel" id="capDetail">
+      <div>
+        <div class="cap-detail-name" id="cdName"></div>
+        <div class="cap-items" id="cdItems"></div>
+      </div>
+      <div>
+        <div class="cap-convo-lbl">Örnek konuşma</div>
+        <div class="cap-convo-wrap" id="cdConvo"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-bg" id="fiyatlar">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:48px">
+      <div class="section-eyebrow">Fiyatlandırma</div>
+      <h2 class="section-title">Şirket bazlı sabit fiyat</h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Kullanıcı sayısı fark etmez — şirketiniz büyüdükçe fiyat artmaz</p>
+    </div>
+    <div class="price-toggle-row">
+      <span class="pt-lbl on" id="ptm">Aylık</span>
+      <div class="pt-toggle" id="pttoggle" onclick="switchPrice()"><div class="pt-knob"></div></div>
+      <span class="pt-lbl" id="pty">Yıllık</span>
+      <span class="pt-save" id="ptsave" style="display:none">2 ay bedava</span>
+    </div>
+    <div class="price-grid">
+      <!-- Başlangıç -->
+      <div class="pc">
+        <div class="pc-name">Başlangıç</div>
+        <div class="pc-desc">Küçük atölye ve KOBİ'ler için</div>
+        <div class="pc-amount" id="pa1">₺2.990</div>
+        <div class="pc-period" id="pp1">/ay, KDV hariç</div>
+        <div class="pc-yearly" id="py1">
+          <div class="pc-yearly-total">Yıllık toplam: ₺29.880</div>
+          <div class="pc-yearly-save">✓ ₺5.900 tasarruf — 2 ay bedava</div>
+        </div>
+        <div class="pc-divider"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><span class="pc-check">✓</span>1–5 kullanıcı</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>3 aktif proje</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Proje Takibi & Şartname</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>BOM & Tasarım</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Satın Alma & Depo</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>İmalat & Kalite & Montaj</div>
+          <div class="pc-feat"><span class="pc-check off">–</span><span class="pc-off">Döküman modülü</span></div>
+          <div class="pc-feat"><span class="pc-check off">–</span><span class="pc-off">Mail entegrasyonu</span></div>
+          <div class="pc-feat"><span class="pc-check off">–</span><span class="pc-off">Servis & Sevk modülü</span></div>
+        </div>
+        <button class="pc-btn pc-btn-dark">15 Gün Ücretsiz Dene</button>
+      </div>
+      <!-- Büyüme -->
+      <div class="pc featured">
+        <div class="pc-badge">En Popüler</div>
+        <div class="pc-name">Büyüme</div>
+        <div class="pc-desc">Orta ölçekli üreticiler için</div>
+        <div class="pc-amount" id="pa2">₺5.990</div>
+        <div class="pc-period" id="pp2">/ay, KDV hariç</div>
+        <div class="pc-yearly" id="py2">
+          <div class="pc-yearly-total">Yıllık toplam: ₺59.880</div>
+          <div class="pc-yearly-save">✓ ₺11.890 tasarruf — 2 ay bedava</div>
+        </div>
+        <div class="pc-divider"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><span class="pc-check">✓</span>6–20 kullanıcı</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Sınırsız proje</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Tüm Başlangıç modülleri</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Döküman modülü</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Servis & Sevk & Otomasyon</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Reçete & Maliyet hesaplama</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Mail entegrasyonu</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Google Drive entegrasyonu</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Öncelikli destek</div>
+        </div>
+        <button class="pc-btn pc-btn-light">15 Gün Ücretsiz Dene</button>
+      </div>
+      <!-- Kurumsal -->
+      <div class="pc">
+        <div class="pc-name">Kurumsal</div>
+        <div class="pc-desc">Büyük üretim şirketleri için</div>
+        <div class="pc-amount cta-style">Teklif Alın</div>
+        <div class="pc-period">Şirketinize özel fiyat</div>
+        <div style="height:14px;margin-bottom:20px"></div>
+        <div class="pc-divider"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><span class="pc-check">✓</span>Sınırsız kullanıcı & proje</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Tüm modüller</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Özel entegrasyonlar</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Yerinde eğitim & kurulum</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Dedicated destek hattı</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>SLA garantisi</div>
+          <div class="pc-feat"><span class="pc-check">✓</span>Özel geliştirme imkânı</div>
+        </div>
+        <button class="pc-btn pc-btn-ghost" onclick="document.getElementById('iletisim').scrollIntoView({behavior:'smooth'})">İletişime Geçin</button>
+      </div>
+    </div>
+    <p class="price-note">Tüm planlarda 15 gün ücretsiz deneme — kredi kartı gerekmez</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-bg" id="iletisim">
+  <div class="section-inner">
+    <div style="margin-bottom:40px">
+      <div class="section-eyebrow">İletişim</div>
+      <h2 class="section-title">Demo talep edin</h2>
+      <p class="section-sub">Sistemi kendi üretim sürecinize göre anlatalım</p>
+    </div>
+    <div class="ctabs">
+      <button class="ctab active" onclick="switchContact('demo')">Demo Talep Et</button>
+      <button class="ctab" onclick="switchContact('info')">İletişim Bilgileri</button>
+    </div>
+    <div class="cform-wrap show" id="cform-demo">
+      <div class="cform-note">Size özel bir demo oturumu ayarlayalım — sistemi kendi üretim sürecinize göre anlatalım.</div>
+      <div class="crow2">
+        <div class="cfield"><label>Adınız Soyadınız *</label><input type="text" placeholder="Ahmet Yılmaz"/></div>
+        <div class="cfield"><label>E-posta *</label><input type="email" placeholder="ahmet@firma.com"/></div>
+      </div>
+      <div class="crow2">
+        <div class="cfield"><label>Telefon *</label><input type="tel" placeholder="+90 555 000 00 00"/></div>
+        <div class="cfield"><label>Şirket Adı *</label><input type="text" placeholder="Firma A.Ş."/></div>
+      </div>
+      <div class="crow2">
+        <div class="cfield"><label>Çalışan Sayısı</label><select><option value="">Seçiniz</option><option>1–10 kişi</option><option>11–50 kişi</option><option>51–200 kişi</option><option>200+ kişi</option></select></div>
+        <div class="cfield"><label>İlgilendiğiniz Plan</label><select><option value="">Seçiniz</option><option>Başlangıç</option><option>Büyüme</option><option>Kurumsal</option><option>Henüz karar vermedim</option></select></div>
+      </div>
+      <div class="cfield"><label>Mesajınız</label><textarea placeholder="Üretim süreciniz, beklentileriniz veya merak ettiklerinizi yazın..."></textarea></div>
+      <button class="csubmit" onclick="submitContact()">Demo Talep Et →</button>
+    </div>
+    <div class="cform-wrap" id="cform-info">
+      <div class="cinfo-cards">
+        <div class="cinfo-card"><div class="cinfo-icon"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><div class="cinfo-lbl">E-posta</div><div class="cinfo-val"><a href="mailto:info@yapayimalat.com">info@yapayimalat.com</a></div></div></div>
+        <div class="cinfo-card"><div class="cinfo-icon"><svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div><div class="cinfo-lbl">Satış 1</div><div class="cinfo-val"><a href="tel:+905322479267">0532 247 92 67</a></div></div></div>
+        <div class="cinfo-card"><div class="cinfo-icon"><svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div><div class="cinfo-lbl">Satış 2</div><div class="cinfo-val"><a href="tel:+905076142077">0507 614 20 77</a></div></div></div>
+        <div class="cinfo-card"><div class="cinfo-icon"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><div class="cinfo-lbl">Adres</div><div class="cinfo-val">Yakacık Yeni Mah. Balcıdere Sok.<br>Tual Adalar Sitesi C:15, Kartal / İstanbul</div></div></div>
+        <div class="cinfo-card"><div class="cinfo-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><div class="cinfo-lbl">Çalışma Saatleri</div><div class="cinfo-val">Hafta içi 09:00 – 18:00</div></div></div>
+      </div>
+    </div>
+    <div class="csuccess" id="csuccess">
+      <div class="csuccess-icon">✓</div>
+      <h3>Demo talebiniz alındı</h3>
+      <p>Size uygun bir demo saati ayarlayacağız.<br>Ortalama 4 iş saati içinde dönüş yapıyoruz.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg width="22" height="22" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#1C1F2E"/><rect x="6" y="18" width="24" height="12" rx="1" fill="none" stroke="#F7F6F2" stroke-width="1.2"/><rect x="9" y="12" width="4" height="7" rx="1" fill="none" stroke="#F7F6F2" stroke-width="1.2"/><rect x="16" y="14" width="4" height="5" rx="1" fill="none" stroke="#F7F6F2" stroke-width="1.2"/><path d="M10 10 Q11 8 12 10 Q13 12 14 10" stroke="#2B5BE0" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M17 12 Q18 10.5 19 12" stroke="#2B5BE0" stroke-width="1.3" stroke-linecap="round" fill="none"/><rect x="15" y="22" width="6" height="8" rx="1" fill="#2B5BE0" opacity="0.9"/><rect x="8" y="21" width="4" height="3" rx="0.5" fill="#2B5BE0" opacity="0.5"/><rect x="24" y="21" width="4" height="3" rx="0.5" fill="#2B5BE0" opacity="0.5"/></svg>
+    yapay<em>imalat</em>
+  </div>
+  <div class="footer-copy">© 2026 Yapay İmalat — Tüm hakları saklıdır</div>
+  <div style="font-size:13px;color:var(--ink-3);font-weight:300">info@yapayimalat.com</div>
+</footer>
+
+<script>
+// HOW TABS
+function switchHowTab(tab, el) {
+  document.querySelectorAll('.how-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('how-chat').style.display = tab === 'chat' ? 'block' : 'none';
+  document.getElementById('how-walkthrough').style.display = tab === 'walkthrough' ? 'block' : 'none';
+  document.getElementById('how-modules').style.display = tab === 'modules' ? 'block' : 'none';
+}
+
+// CHAT
+const chatReplies = [
+  { u: "ALP-2026 projesinde hangi montaj grupları hazır?", a: "3 grup hazır: Tahrik ünitesi ✅ · Kontrol panosu ✅ · Şasi ✅\nEksik: Konveyör grubu (STD-014 ~3 gün), Pnömatik grup (~5 gün)." },
+  { u: "Teslim tarihi geçen satın almaları göster", a: "3 gecikmiş kayıt:\n· STD-012 → 3 gün geç\n· OTO-007 → 1 gün geç\n· HM-034 → 5 gün geç\nTedarikçileri arayalım mı?" },
+  { u: "F-002 kalite kontrolü onaylandı", a: "F-002 onaylandı ✓ Depoya eklendi.\nP-003 projesinde tüm parçalar depoda — montaj aşamasına geçelim mi?" },
+  { u: "ALP-2026 maliyet raporu", a: "ALP-2026 toplam: ₺487.320\n· Malzeme: ₺312.400 (%64)\n· Satın alma: ₺98.700 (%20)\n· İşçilik: ₺76.220 (%16)\nHedefin ₺23.180 üzerinde." },
+];
+let chatIdx = 0;
+function sendChat() {
+  const inp = document.getElementById('chatInp');
+  const msgs = document.getElementById('chatMsgs');
+  const txt = inp.value.trim();
+  const d = chatReplies[chatIdx % chatReplies.length]; chatIdx++;
+  addCMsg(msgs, 'user', txt || d.u);
+  inp.value = '';
+  const ti = document.getElementById('typingIndicator');
+  ti.style.display = 'flex';
+  msgs.scrollTop = 9999;
+  setTimeout(() => {
+    ti.style.display = 'none';
+    addCMsg(msgs, 'ai', txt ? 'Bu bir demo ortamıdır. Gerçek sistemi denemek için ücretsiz kayıt olun.' : d.a);
+    msgs.scrollTop = 9999;
+  }, 1200);
+}
+function addCMsg(c, t, tx) {
+  const w = document.createElement('div');
+  w.style.cssText = `display:flex;gap:8px;align-items:flex-start;${t==='user'?'justify-content:flex-end;':''}margin-bottom:2px;`;
+  if (t === 'user') {
+    w.innerHTML = `<div style="background:#2B5BE0;color:white;padding:9px 13px;border-radius:12px 4px 12px 12px;font-size:12px;line-height:1.5;max-width:80%;">${tx.replace(/\n/g,'<br>')}</div><div style="width:26px;height:26px;border-radius:50%;background:#374151;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:#9BA3B2;">A</div>`;
+  } else {
+    w.innerHTML = `<div style="width:26px;height:26px;border-radius:50%;background:#2B5BE0;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:white;">AI</div><div style="background:#262A3A;border:1px solid rgba(255,255,255,0.07);color:#C8CDD8;padding:10px 13px;border-radius:4px 12px 12px 12px;font-size:12px;line-height:1.6;max-width:85%;">${tx.replace(/\n/g,'<br>')}</div>`;
+  }
+  c.appendChild(w);
+}
+document.addEventListener('DOMContentLoaded', function() {
+  const chatInp = document.getElementById('chatInp');
+  if (chatInp) chatInp.addEventListener('keydown', e => { if(e.key==='Enter') sendChat(); });
+  renderCaps();
+});
+const caps = [
+  { name:"Proje Takibi", short:"Girdiler, revizeler, şartname", color:"#2B5BE0", bg:"#E8EDFC", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#2B5BE0" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>`, items:["Proje girdileri, revizeleri ve değişikliklerini kayıt altına alma","Şartname oluşturma, versiyon takibi ve eski versiyonlarla kıyaslama","Word veya PDF formatında döküman yükleme","Asistanla konuşarak şartname değişikliği ve otomatik versiyon atama","Teslim tarihi ve aşama takibi"], prompt:"ALP-2026 şartnamesinde bant hızını 12 m/dak olarak güncelle", ai:"Şartname güncellendi ✓ v1.4 → v1.5. Değişiklik: Bant hızı 10 → 12 m/dak. Karşılaştırma raporu oluşturayım mı?" },
+  { name:"Tasarım", short:"Öneriler, hesaplamalar, BOM", color:"#2D7A5F", bg:"#E0F0E8", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#2D7A5F" stroke-width="1.5"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>`, items:["Tasarım önerileri ve mühendislik hesaplamaları","Standart ürün ve malzeme seçimi önerileri","BOM listesi hazırlama","Önceki tasarımlardan öneriler, tekrar eden hataları önleme","Tüm bölümlerden gelen geri bildirimleri hatırlatma"], prompt:"Pnömatik silindir seçimi için standart ürün öner, 80mm çap 200mm strok", ai:"SMC CDJ2B80-200 öneriyorum. Stokta mevcut, 3 iş günü teslimat. Not: Benzer projede montaj flanş bağlantısında sorun yaşandı — alternatif tipi de göstereyim mi?" },
+  { name:"Reçete", short:"Hammadde, işlem, miktar", color:"#533AB7", bg:"#EEEDFE", isNew:true, icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#533AB7" stroke-width="1.5"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>`, items:["Parça veya ürün bazında hammadde reçetesi hazırlama","İşlem sırası ve miktar hesaplama","Reçeteyi BOM ile ilişkilendirme","Malzeme fire oranlarını hesaba katma","Reçete versiyonlama ve karşılaştırma"], prompt:"T-001 şaft parçası için hammadde reçetesi hazırla, fire %10", ai:"T-001 reçetesi hazırlandı ✓ Ø50 St52: 0,42 kg (fire dahil 0,46 kg). İşlem: Torna → Taşlama. BOM'a bağlandı, v1.0." },
+  { name:"Maliyet", short:"Makine, işçilik, toplam", color:"#993C1D", bg:"#FAECE7", isNew:true, icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#993C1D" stroke-width="1.5"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`, items:["BOM ve işçilik bazında toplam makine maliyeti hesaplama","Malzeme, imalat ve satın alma maliyetlerini ayrıştırma","Proje bazında maliyet raporu","Hedef maliyet ile gerçek maliyeti karşılaştırma","Teklif fiyatı için maliyet + kar marjı hesaplama"], prompt:"ALP-2026 makinesinin toplam maliyetini çıkar", ai:"ALP-2026: ₺487.320 toplam. Malzeme: ₺312.400 · Satın alma: ₺98.700 · İşçilik: ₺76.220. Hedefin ₺23.180 üzerinde — aşan kalemleri göstereyim mi?" },
+  { name:"Satın Alma", short:"Tedarikçi, teklif, takip", color:"#854F0B", bg:"#FAEEDA", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="1.5"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`, items:["BOM üzerinden satın alma operasyonu başlatma","Tedarikçi bulma ve kayıt altına alma","Tedarikçilere mail atarak teklif alma","Gelen teklifleri analiz edip karşılaştırmalı sunma","Tedarik sürelerini takip etme, uyumsuz süreleri uyarma"], prompt:"BOM'daki tüm standart parçalar için tedarikçilere teklif maili at", ai:"18 tedarikçiye teklif maili gönderildi ✓ 34 parça için yanıt bekleniyor. Kritik 6 parça var — öncelikli takip listesine ekleyeyim mi?" },
+  { name:"İmalat", short:"İş emirleri, teknik resim", color:"#993C1D", bg:"#FAECE7", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#993C1D" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`, items:["BOM üzerinden imalat operasyonu başlatma","Talaşlı imalat ve fason üretim takibi","Teknik resim kontrolü","İmalat önerilerini tasarıma iletme ve uyarı oluşturma"], prompt:"T-serisi tüm parçalar için iş emirlerini oluştur", ai:"T-serisi 12 parça için iş emri oluşturuldu ✓ Öncelik: T-003 → T-007 → T-001. Hammaddesi eksik 2 parça beklemeye alındı." },
+  { name:"Montaj", short:"Gruplar, hazırlık, maliyet", color:"#2B5BE0", bg:"#E8EDFC", isNew:true, icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#2B5BE0" stroke-width="1.5"><path d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>`, items:["Montaja hazır olan grupları takip etme","Montajın ne zaman tamamlandığını kayıt altına alma","Gerekli parçaların ne zaman geleceğini hesaplama","Montajı kimin/kimlerin yaptığını kaydetme","Montaj gruplarının maliyetlerini raporlama"], prompt:"ALP-2026 projesinde hangi montaj grupları hazır?", ai:"3 grup hazır: Tahrik ünitesi ✅ · Kontrol panosu ✅ · Şasi ✅. Eksik: Konveyör (STD-014 ~3 gün) · Pnömatik grup (~5 gün)." },
+  { name:"Kalite", short:"Kontrol, takip, onay/red", color:"#2D7A5F", bg:"#E0F0E8", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#2D7A5F" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`, items:["Satın alınan ve imalatı biten tüm parçaların kalite kontrolü","Parça bazında kontrol yönteminin tarifi","Kontrol eden kişilerin takibi ve raporlanması","Ölçüm değerleri, kabul kriterleri, red sebepleri kayıt altına alma"], prompt:"Bugün kalite kontrole giren parçaları listele", ai:"9 parça kontrol edildi. 7 onaylandı, 2 reddedildi: T-004 (Ø32→Ø31.6) · F-011 (Ra 1.6 limitini aşıyor). Yeniden kontrol planı oluşturayım mı?" },
+  { name:"Depo", short:"Stok, rezervasyon, kritik", color:"#533AB7", bg:"#EEEDFE", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#533AB7" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`, items:["Depoya giren ve çıkan parçaların takibi","Kritik stok seviyesinin altına düşen parçalar için otomatik uyarı ve sipariş önerisi","Proje bazlı parça rezervasyonu","Parça revize ve güncelleme işlemleri"], prompt:"ALP-2026 projesi için depoda rezerve hangi ürünler var?", ai:"ALP-2026 için 14 parça rezerve: Rulman 6208 (×4) · Pnömatik silindir Ø80 (×2) · Motor 0.75kW (×1) ve 11 diğer. Toplam: ₺28.450." },
+  { name:"Sevk", short:"Taşıma, yükleme, kayıt", color:"#2B5BE0", bg:"#E8EDFC", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#2B5BE0" stroke-width="1.5"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>`, items:["Sevk, taşıma ve yükleme talimatları","Sevk bilgilerini kayıt altına alma","Adres ve konum bilgilerini paylaşma","Sevk paketi ve belge hazırlama"], prompt:"ALP-2026 makinesi için sevk planı oluştur", ai:"Sevk planı hazırlandı ✓ Müşteri: Alp Makine, İzmir. 2.340 kg, TIR önerilir. Forklift min 3 ton. Belgeleri hazırlayayım mı?" },
+  { name:"Döküman", short:"Kılavuz, garanti, listeler", color:"#2D7A5F", bg:"#E0F0E8", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#2D7A5F" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`, items:["Kullanım kılavuzu otomatik oluşturma","Kritik yedek parça listesi","Garanti belgesi oluşturma","Proje girdilerinden dökümanı kendisi çıkarma","Versiyon takibi ve güncelleme"], prompt:"ALP-2026 projesi için kullanım kılavuzu oluştur", ai:"Kılavuz hazırlandı (v1.0) ✓ Bölümler: Güvenlik · Teknik özellikler · Devreye alma · Operasyon · Bakım · Arıza kodları. Word ve PDF olarak indirilebilir." },
+  { name:"Kullanıcı", short:"Roller, yetkiler, bölümler", color:"#993556", bg:"#FBEAF0", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#993556" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`, items:["Her bölüm için ayrı kullanıcı oluşturma","Bölüm bazlı yetkilendirme","Kullanıcı aktivite takibi","Yönetici paneli ile merkezi kontrol"], prompt:"Satın alma bölümü için 3 kullanıcı oluştur", ai:"3 kullanıcı oluşturuldu ✓ alp.satin1/2/3 — Satın Alma modülü (okuma+yazma), diğerleri kilitli. Davet maili gönderilsin mi?" },
+  { name:"Otomasyon", short:"Senaryo, test, bildirim", color:"#854F0B", bg:"#FAEEDA", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#854F0B" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`, items:["Otomasyon senaryosu oluşturma ve dokümantasyon","Test adımlarını takip etme ve sonuçları kaydetme","Test tamamlanınca ilgili bölümleri bilgilendirme","Geri bildirimleri dökümanlaştırma"], prompt:"ALP-2026 otomasyon test senaryosunu oluştur", ai:"24 test adımı hazırlandı ✓ Güç testi · Emniyet devreleri · Sensör kalibrasyonu · Konveyör hız testi · Acil stop... Sorumlu kişilere atayayım mı?" },
+  { name:"Servis", short:"Problem, çözüm, geri bildirim", color:"#2D7A5F", bg:"#E0F0E8", icon:`<svg viewBox="0 0 24 24" fill="none" stroke="#2D7A5F" stroke-width="1.5"><path d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>`, items:["Servis kontrollerini takip etme ve kayıt altına alma","Oluşan problemleri makine bazında kaydetme","Makine sorunlarının çözüm bilgisi","Servis geri bildirimlerini tasarıma öneri olarak sunma"], prompt:"ALP-2026 hidrolik basınç sorunu — servis kayıtlarına bak", ai:"2 benzer kayıt bulundu. Çözüm: Basınç valfı P3 kontrol (set: 120 bar). Filtre değişimi gerekli — son değişim 8 ay önce. Tasarım ekibine bildirim göndereyim mi?" },
+];
+let activeIdx = null;
+function renderCaps() {
+  const g = document.getElementById('capGrid'); g.innerHTML = '';
+  caps.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'cap-card' + (activeIdx===i?' active':'');
+    el.innerHTML = `<div class="cap-icon-wrap" style="background:${c.bg}">${c.icon}</div><div class="cap-name">${c.name}${c.isNew?'<span class="cap-new">YENİ</span>':''}</div><div class="cap-short">${c.short}</div>`;
+    el.onclick = () => { activeIdx = activeIdx===i?null:i; renderCaps(); if(activeIdx!==null) showCap(caps[activeIdx]); else document.getElementById('capDetail').classList.remove('show'); };
+    g.appendChild(el);
+  });
+}
+function showCap(c) {
+  document.getElementById('cdName').textContent = c.name;
+  document.getElementById('cdItems').innerHTML = c.items.map(x=>`<div class="cap-item"><div class="cap-bullet-dot" style="background:${c.color}"></div><span>${x}</span></div>`).join('');
+  document.getElementById('cdConvo').innerHTML = `<div class="cap-row u"><div class="cap-msg-u">${c.prompt}</div></div><div class="cap-row"><div class="cap-msg-a">${c.ai}</div></div>`;
+  document.getElementById('capDetail').classList.add('show');
+  document.getElementById('capDetail').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+// PRICING
+let py = false;
+function switchPrice() {
+  py = !py;
+  document.getElementById('pttoggle').classList.toggle('on', py);
+  document.getElementById('ptm').classList.toggle('on', !py);
+  document.getElementById('pty').classList.toggle('on', py);
+  document.getElementById('ptsave').style.display = py ? 'inline-block' : 'none';
+  document.getElementById('pa1').textContent = py ? '₺2.490' : '₺2.990';
+  document.getElementById('pa2').textContent = py ? '₺4.990' : '₺5.990';
+  document.getElementById('pp1').textContent = py ? '/ay, yıllık ödeme, KDV hariç' : '/ay, KDV hariç';
+  document.getElementById('pp2').textContent = py ? '/ay, yıllık ödeme, KDV hariç' : '/ay, KDV hariç';
+  document.getElementById('py1').classList.toggle('show', py);
+  document.getElementById('py2').classList.toggle('show', py);
+}
+
+// CONTACT
+function switchContact(tab) {
+  document.querySelectorAll('.ctab').forEach((t,i)=>t.classList.toggle('active',(tab==='demo'&&i===0)||(tab==='info'&&i===1)));
+  document.getElementById('cform-demo').classList.toggle('show', tab==='demo');
+  document.getElementById('cform-info').classList.toggle('show', tab==='info');
+  document.getElementById('csuccess').style.display = 'none';
+}
+function submitContact() {
+  document.getElementById('cform-demo').classList.remove('show');
+  document.getElementById('csuccess').style.display = 'block';
+}
+</script>
+
+<!-- DEMO WIDGET STYLES -->
+<style>
+.dw-topbar { padding:11px 16px; background:#13151F; display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.dw-dots { display:flex; gap:5px; }
+.dw-dot { width:10px; height:10px; border-radius:50%; }
+.dw-dot.r{background:#FF6B6B;} .dw-dot.y{background:#FFD93D;} .dw-dot.g{background:#6BCB77;}
+.dw-title { flex:1; text-align:center; font-size:12px; color:rgba(255,255,255,0.35); font-family:'Outfit',sans-serif; }
+.dw-live { font-size:10px; background:rgba(107,203,119,0.15); color:#6BCB77; padding:3px 8px; border-radius:5px; font-weight:500; font-family:'Outfit',sans-serif; }
+.dw-scbar { padding:7px 14px; background:#13151F; display:flex; align-items:center; gap:7px; overflow-x:auto; scrollbar-width:none; border-bottom:1px solid rgba(255,255,255,0.04); }
+.dw-scbar::-webkit-scrollbar{display:none;}
+.dw-pill { font-size:10px; font-weight:500; padding:3px 9px; border-radius:20px; white-space:nowrap; cursor:pointer; transition:all 0.2s; background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.3); border:1px solid transparent; font-family:'Outfit',sans-serif; }
+.dw-pill.active { background:rgba(43,91,224,0.25); color:#7BA4F8; border-color:rgba(43,91,224,0.3); }
+.dw-progress-wrap { height:2px; background:rgba(255,255,255,0.05); }
+.dw-progress { height:2px; background:#2B5BE0; width:0%; transition:width 0.08s linear; }
+.dw-split { display:grid; grid-template-columns:1fr 1fr; min-height:320px; }
+.dw-chat { border-right:1px solid rgba(255,255,255,0.05); display:flex; flex-direction:column; }
+.dw-chat-hdr { padding:7px 12px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; gap:6px; background:#1C1F2E; }
+.dw-proj-tag { background:rgba(43,91,224,0.2); color:#7BA4F8; font-size:10px; font-weight:600; padding:2px 8px; border-radius:5px; letter-spacing:0.3px; font-family:'Outfit',sans-serif; }
+.dw-user-tag { font-size:10px; color:rgba(255,255,255,0.25); margin-left:auto; font-family:'Outfit',sans-serif; }
+.dw-msgs { flex:1; padding:12px; display:flex; flex-direction:column; gap:9px; overflow-y:auto; background:#1C1F2E; }
+.dw-msgs::-webkit-scrollbar{width:3px;} .dw-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
+.dw-row { display:flex; gap:7px; align-items:flex-end; }
+.dw-row.u { flex-direction:row-reverse; }
+.dw-av { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; font-family:'Outfit',sans-serif; }
+.dw-av.ai{background:#2B5BE0;color:white;} .dw-av.usr{background:#374151;color:#9BA3B2;}
+.dw-av.tsr{background:#2D7A5F;color:#7ECFB0;} .dw-av.iml{background:#854F0B;color:#F5C87A;}
+.dw-av.klt{background:#533AB7;color:#C4BAF8;} .dw-av.mnt{background:#993C1D;color:#F5A88A;}
+.dw-bubble { padding:8px 11px; border-radius:12px; font-size:11.5px; line-height:1.55; max-width:88%; font-family:'Outfit',sans-serif; }
+.dw-bubble.ai { background:#262A3A; border:1px solid rgba(255,255,255,0.07); color:#C8CDD8; border-radius:4px 12px 12px 12px; }
+.dw-bubble.user { background:#2B5BE0; color:white; border-radius:12px 4px 12px 12px; }
+.dw-typing { display:none; padding:0 12px 8px; }
+.dw-tdots { display:flex; gap:3px; padding:8px 12px; background:#262A3A; border:1px solid rgba(255,255,255,0.07); border-radius:4px 12px 12px 12px; width:fit-content; }
+.dw-td { width:5px; height:5px; border-radius:50%; background:#6B7280; animation:dwtd 1.2s infinite; }
+.dw-td:nth-child(2){animation-delay:0.2s;} .dw-td:nth-child(3){animation-delay:0.4s;}
+@keyframes dwtd{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-3px);opacity:1}}
+.dw-input-bar { padding:8px 10px; border-top:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; gap:7px; background:#13151F; }
+.dw-input-txt { flex:1; font-size:11px; color:#4B5563; min-height:16px; white-space:nowrap; overflow:hidden; font-family:'Outfit',sans-serif; }
+.dw-cursor { display:inline-block; width:1px; height:12px; background:#4B5563; margin-left:1px; animation:dwblink 1s infinite; vertical-align:middle; }
+@keyframes dwblink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.dw-send { width:26px; height:26px; background:#2B5BE0; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.dw-visual { background:#13151F; display:flex; flex-direction:column; }
+.dw-vis-hdr { padding:8px 12px; border-bottom:1px solid rgba(255,255,255,0.05); font-size:10px; font-weight:600; color:rgba(255,255,255,0.25); letter-spacing:0.8px; text-transform:uppercase; font-family:'Outfit',sans-serif; }
+.dw-vis-content { flex:1; padding:12px; overflow:hidden; font-family:'Outfit',sans-serif; }
+.dw-bottom { padding:7px 14px; border-top:1px solid rgba(255,255,255,0.05); background:#13151F; display:flex; align-items:center; gap:7px; }
+.dw-sc-lbl { font-size:10px; color:#4B5563; flex:1; font-family:'Outfit',sans-serif; }
+.dw-sc-lbl span { color:#7BA4F8; }
+.dw-btn { background:rgba(255,255,255,0.06); border:none; color:rgba(255,255,255,0.35); padding:4px 10px; border-radius:6px; font-size:11px; cursor:pointer; font-family:'Outfit',sans-serif; transition:all 0.2s; }
+.dw-btn:hover { background:rgba(255,255,255,0.1); color:white; }
+.dw-btn.play { background:rgba(43,91,224,0.2); color:#7BA4F8; }
+/* Visual card styles */
+.dw-pcard { background:#1C1F2E; border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:11px; margin-bottom:7px; font-family:'Outfit',sans-serif; }
+.dw-pcard-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.dw-pname { font-size:12px; font-weight:600; color:#E8EDFC; }
+.dw-st { font-size:10px; padding:2px 7px; border-radius:5px; font-weight:500; }
+.dw-st.active{background:rgba(45,122,95,0.2);color:#7ECFB0;}
+.dw-st.blue{background:rgba(43,91,224,0.2);color:#7BA4F8;}
+.dw-st.warn{background:rgba(255,193,7,0.15);color:#FFC107;}
+.dw-st.depot{background:rgba(43,91,224,0.2);color:#7BA4F8;}
+.dw-meta { font-size:11px; color:#6B7280; }
+.dw-sa { display:flex; align-items:center; gap:7px; padding:6px 9px; background:#1C1F2E; border-radius:7px; margin-bottom:5px; border:1px solid rgba(255,255,255,0.05); }
+.dw-sa-pno { font-size:11px; font-weight:600; color:#7BA4F8; min-width:55px; }
+.dw-sa-nm { font-size:11px; color:#9BA3B2; flex:1; }
+.dw-notif { background:#262A3A; border:1px solid rgba(255,255,255,0.08); border-radius:11px; padding:9px 11px; margin-bottom:7px; display:flex; gap:9px; align-items:flex-start; opacity:0; transform:translateX(16px); transition:all 0.4s; }
+.dw-notif.show{opacity:1;transform:translateX(0);}
+.dw-ni { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+.dw-nt { font-size:11px; font-weight:600; color:#E8EDFC; margin-bottom:2px; }
+.dw-nb { font-size:10px; color:#6B7280; line-height:1.4; }
+.dw-ntime { font-size:9px; color:#4B5563; margin-top:2px; }
+.dw-phone { background:rgba(255,255,255,0.05); border-radius:13px; padding:9px 11px; display:flex; gap:7px; align-items:flex-start; margin-bottom:7px; border:1px solid rgba(255,255,255,0.07); opacity:0; transform:translateY(-8px); transition:all 0.4s; }
+.dw-phone.show{opacity:1;transform:translateY(0);}
+.dw-ph-ic { width:24px; height:24px; border-radius:6px; background:#2B5BE0; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
+.dw-ph-app { font-size:10px; color:#6B7280; margin-bottom:2px; }
+.dw-ph-msg { font-size:11px; color:#C8CDD8; line-height:1.4; }
+.dw-rvbox { background:#1C1F2E; border-radius:9px; padding:11px; margin-bottom:7px; }
+.dw-rvtitle { font-size:11px; font-weight:600; color:#E8EDFC; margin-bottom:7px; }
+.dw-rvold { display:flex; gap:5px; align-items:center; padding:4px 7px; background:rgba(255,107,107,0.08); border-radius:5px; margin-bottom:4px; border-left:2px solid #FF6B6B; }
+.dw-rvnew { display:flex; gap:5px; align-items:center; padding:4px 7px; background:rgba(107,203,119,0.08); border-radius:5px; border-left:2px solid #6BCB77; }
+.dw-rvlbl { font-size:10px; color:#6B7280; min-width:50px; }
+.dw-ki { display:flex; align-items:center; gap:7px; padding:6px 9px; background:#1C1F2E; border-radius:7px; margin-bottom:5px; border:1px solid rgba(255,255,255,0.05); opacity:0; transition:opacity 0.4s; }
+.dw-ki.show{opacity:1;}
+.dw-kck { width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0; background:rgba(45,122,95,0.3); color:#7ECFB0; }
+.dw-doc { display:flex; align-items:center; gap:7px; padding:7px 9px; background:#1C1F2E; border-radius:7px; margin-bottom:5px; border:1px solid rgba(255,255,255,0.05); opacity:0; transition:opacity 0.4s; }
+.dw-doc.show{opacity:1;}
+.dw-doc-ic { width:26px; height:26px; background:rgba(43,91,224,0.2); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+.dw-doc-nm { font-size:11px; color:#C8CDD8; font-weight:500; }
+.dw-doc-mt { font-size:10px; color:#6B7280; }
+.dw-tbl { width:100%; border-collapse:collapse; }
+.dw-tbl th { font-size:10px; color:#6B7280; font-weight:500; padding:4px 5px; border-bottom:1px solid rgba(255,255,255,0.05); text-align:left; }
+.dw-tbl td { font-size:11px; color:#9BA3B2; padding:4px 5px; border-bottom:1px solid rgba(255,255,255,0.03); }
+.dw-tbl td:first-child{color:#7BA4F8;font-weight:500;}
+.dw-tr{opacity:0;transform:translateY(3px);transition:all 0.3s;}
+.dw-tr.show{opacity:1;transform:translateY(0);}
+.dw-cost { background:#1C1F2E; border-radius:9px; padding:11px; margin-top:8px; }
+.dw-cst-row { display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px; }
+.dw-cst-row:last-child{border:none;padding-top:7px;margin-top:2px;border-top:1px solid rgba(255,255,255,0.1);}
+.dw-cst-lbl{color:#9BA3B2;} .dw-cst-val{font-weight:600;color:#E8EDFC;}
+.dw-cst-val.tot{color:#7BA4F8;font-size:13px;}
+</style>
+
+<script>
+// ─── DEMO WIDGET ───────────────────────────────────────────────────────────────
+(function() {
+const scenes = [
+  {
+    pill:"📋 Proje", projTag:"ALP-2026", userTag:"Alper · Tasarım · Lider", visHdr:"PROJE KARTI",
+    msgs:[
+      {r:"user",av:"A",ac:"usr",t:"ALP-2026 projesini oluştur. Müşteri: Alp Makine A.Ş. Teslim: 15 Temmuz 2026."},
+      {r:"ai",d:1200,t:'Proje oluşturuldu ✓<br><span style="color:#7BA4F8">ALP-2026</span> · Alp Makine A.Ş. · Teslim: 15 Tem 2026<br>Aşama: <span style="color:#7ECFB0">Tasarım</span>'},
+    ],
+    vis:()=>`<div class="dw-pcard"><div class="dw-pcard-hdr"><span class="dw-pname">ALP-2026</span><span class="dw-st blue">Tasarım</span></div><div class="dw-meta">Alp Makine A.Ş. · Teslim: 15 Tem 2026</div></div><div class="dw-pcard"><div class="dw-meta" style="margin-bottom:6px;">Sorumlu Ekip</div><div style="display:flex;gap:5px;flex-wrap:wrap;"><span style="background:rgba(43,91,224,0.15);color:#7BA4F8;font-size:10px;padding:2px 8px;border-radius:5px;">Alper · Lider</span><span style="background:rgba(45,122,95,0.15);color:#7ECFB0;font-size:10px;padding:2px 8px;border-radius:5px;">Mehmet · Tasarım</span><span style="background:rgba(133,79,11,0.2);color:#F5C87A;font-size:10px;padding:2px 8px;border-radius:5px;">Ayşe · Satın Alma</span></div></div>`,
+  },
+  {
+    pill:"📦 BOM & Maliyet", projTag:"ALP-2026", userTag:"Alper · Tasarım · Lider", visHdr:"BOM & MALİYET",
+    msgs:[
+      {r:"user",av:"A",ac:"usr",t:"BOM listesini yükledim. Makine maliyeti yaklaşık ne olur?"},
+      {r:"ai",d:1400,t:'BOM analizi tamamlandı ✓ 24 parça<br><b style="color:#7BA4F8">Malzeme:</b> ₺312.400<br><b style="color:#F5C87A">İşçilik:</b> ₺76.220<br><b style="color:#7ECFB0">Toplam: ₺487.320</b>'},
+    ],
+    vis:()=>`<table class="dw-tbl"><tr><th>Parça No</th><th>Tanım</th><th>Tip</th></tr>${[["T-001","Şaft","Torna"],["F-002","Gövde","Freze"],["STD-012","Rulman","Standart"],["L-003","Sac","Lazer"],["OTO-007","Silindir","Standart"]].map((p,i)=>`<tr class="dw-tr" id="dtr${i}" style="transition-delay:${i*0.1}s"><td>${p[0]}</td><td>${p[1]}</td><td style="color:#6B7280">${p[2]}</td></tr>`).join('')}</table><div class="dw-cost"><div class="dw-cst-row"><span class="dw-cst-lbl">Malzeme</span><span class="dw-cst-val">₺312.400</span></div><div style="height:3px;background:rgba(43,91,224,0.25);border-radius:2px;margin:-2px 0 5px;"><div style="height:3px;width:64%;background:#2B5BE0;border-radius:2px;"></div></div><div class="dw-cst-row"><span class="dw-cst-lbl">İşçilik</span><span class="dw-cst-val">₺76.220</span></div><div style="height:3px;background:rgba(133,79,11,0.15);border-radius:2px;margin:-2px 0 5px;"><div style="height:3px;width:16%;background:#854F0B;border-radius:2px;"></div></div><div class="dw-cst-row"><span class="dw-cst-lbl" style="font-weight:600;color:#E8EDFC;">Toplam</span><span class="dw-cst-val tot">₺487.320</span></div></div>`,
+    onShow:()=>{setTimeout(()=>document.querySelectorAll('.dw-tr').forEach(r=>r.classList.add('show')),150);}
+  },
+  {
+    pill:"📝 Revize & Bildirim", projTag:"ALP-2026", userTag:"Alper · Tasarım · Lider", visHdr:"REVİZYON",
+    msgs:[
+      {r:"user",av:"A",ac:"usr",t:"Şartnamede bant hızını 10 m/dak'tan 12 m/dak'a revize et."},
+      {r:"ai",d:1200,t:'Şartname güncellendi ✓ v1.4 → <b style="color:#6BCB77">v1.5</b><br>Etkilenen birimler bildirildi: <span style="color:#7BA4F8">İmalat, Satın Alma, Otomasyon</span>'},
+    ],
+    vis:()=>`<div class="dw-rvbox"><div class="dw-rvtitle">Şartname v1.5 — Değişiklik</div><div class="dw-rvold"><span class="dw-rvlbl">Eski:</span><span style="font-size:11px;color:#FF6B6B;text-decoration:line-through;">Bant hızı 10 m/dak</span></div><div class="dw-rvnew" style="margin-top:4px;"><span class="dw-rvlbl">Yeni:</span><span style="font-size:11px;color:#6BCB77;">Bant hızı 12 m/dak</span></div></div><div class="dw-notif" id="dn1"><div class="dw-ni" style="background:rgba(133,79,11,0.2);">⚙️</div><div><div class="dw-nt">İmalat Bildirimi</div><div class="dw-nb">Motor seçimi güncellenmeli</div><div class="dw-ntime">Az önce</div></div></div><div class="dw-notif" id="dn2"><div class="dw-ni" style="background:rgba(43,91,224,0.2);">🛒</div><div><div class="dw-nt">Satın Alma Bildirimi</div><div class="dw-nb">Frekans inverteri kapasitesi kontrol edilmeli</div><div class="dw-ntime">Az önce</div></div></div><div class="dw-phone" id="dn3"><div class="dw-ph-ic">📱</div><div><div class="dw-ph-app">Yapay İmalat · Şimdi</div><div class="dw-ph-msg">ALP-2026 şartname güncellendi — otomasyon senaryosu etkilendi</div></div></div>`,
+    onShow:()=>{
+      setTimeout(()=>{const e=document.getElementById('dn1');if(e)e.classList.add('show');},300);
+      setTimeout(()=>{const e=document.getElementById('dn2');if(e)e.classList.add('show');},700);
+      setTimeout(()=>{const e=document.getElementById('dn3');if(e)e.classList.add('show');},1100);
+    }
+  },
+  {
+    pill:"🛒 Satın Alma", projTag:"ALP-2026", userTag:"Ayşe · Satın Alma", visHdr:"SATIN ALMA",
+    msgs:[
+      {r:"user",av:"Ay",ac:"usr",t:"BOM'daki standart parçalar için tedarikçilere teklif maili at."},
+      {r:"ai",d:1200,t:'12 tedarikçiye mail gönderildi 📧<br>Kritik: <span style="color:#FF6B6B">OTO-007 silindir</span> — teslim süresi takvimi aşıyor'},
+    ],
+    vis:()=>`${[["STD-012","Rulman 6208","dw-st active","Teslim Alındı"],["OTO-007","Silindir Ø80","dw-st warn","Kargoda ⚠"],["HM-034","St52 Çubuk","dw-st active","Teslim Alındı"],["STD-018","Redüktör","dw-st warn","Teklif Bekleniyor"]].map(i=>`<div class="dw-sa"><span class="dw-sa-pno">${i[0]}</span><span class="dw-sa-nm">${i[1]}</span><span class="${i[2]}">${i[3]}</span></div>`).join('')}`,
+  },
+  {
+    pill:"✅ Kalite → Depo", projTag:"ALP-2026", userTag:"Kemal · Kalite", visHdr:"KALİTE & DEPO",
+    msgs:[
+      {r:"user",av:"K",ac:"klt",t:"Teslim alınan parçaların kalite kontrolünü yap."},
+      {r:"ai",d:1200,t:'Kalite kontrol tamamlandı ✓<br>3 parça onaylandı — depoya <span style="color:#7BA4F8">ALP-2026 rezervasyonlu</span> eklendi 📦'},
+    ],
+    vis:()=>`${[["STD-012","Rulman — ölçü OK"],["HM-034","Çubuk — sertlik testi OK"],["STD-018","Redüktör — döküman OK"]].map((i,idx)=>`<div class="dw-ki" id="dki${idx}"><div class="dw-kck">✓</div><span style="font-size:11px;font-weight:600;color:#9BA3B2;min-width:55px;">${i[0]}</span><span style="font-size:10px;color:#6B7280;">${i[1]}</span></div>`).join('')}<div class="dw-sa" style="margin-top:8px;border-color:rgba(43,91,224,0.2);"><span style="font-size:11px;">📦</span><span class="dw-sa-nm">3 parça depoya rezervasyonlu eklendi</span><span class="dw-st depot">ALP-2026</span></div>`,
+    onShow:()=>{[0,1,2].forEach(i=>setTimeout(()=>{const e=document.getElementById('dki'+i);if(e)e.classList.add('show');},250+i*280));}
+  },
+  {
+    pill:"🔩 Montaj", projTag:"ALP-2026", userTag:"Hasan · Montaj", visHdr:"MONTAJ GRUBU",
+    msgs:[
+      {r:"ai",d:0,t:'🔔 <b>Montaj Bildirimi</b><br>Tahrik Ünitesi parçaları hazır — montaja başlayabilirsiniz!'},
+      {r:"user",av:"H",ac:"mnt",t:"Montaja başladık. T-001 şaftta tolerans sorunu var, tasarım incelemeli."},
+      {r:"ai",d:1100,t:'Geri bildirim kaydedildi ✓<br><span style="color:#7BA4F8">Mehmet · Tasarım</span> bildirildi 📩<br>Sonraki tasarımlar için otomatik öneri işaretlendi 🔖'},
+    ],
+    vis:()=>`<div class="dw-pcard"><div class="dw-pcard-hdr"><span class="dw-pname" style="font-size:12px;">Tahrik Ünitesi</span><span class="dw-st active">Hazır ✓</span></div><div style="display:flex;flex-direction:column;gap:3px;margin-top:6px;">${[["T-001 Şaft","Depoda ✓"],["STD-012 Rulman","Depoda ✓"],["F-002 Gövde","Depoda ✓"]].map(p=>`<div style="display:flex;justify-content:space-between;font-size:10px;color:#6B7280;padding:2px 0;"><span>${p[0]}</span><span style="color:#7ECFB0;">${p[1]}</span></div>`).join('')}</div></div><div class="dw-notif show"><div class="dw-ni" style="background:rgba(255,107,107,0.15);">⚠️</div><div><div class="dw-nt">Montaj → Tasarım</div><div class="dw-nb">T-001 şaft tolerans geri bildirimi — Mehmet inceleyecek</div><div class="dw-ntime">Az önce · Hasan</div></div></div>`,
+  },
+  {
+    pill:"✏️ Tasarım", projTag:"ALP-2026", userTag:"Mehmet · Tasarım", visHdr:"TASARIM DANIŞMA",
+    msgs:[
+      {r:"user",av:"M",ac:"tsr",t:"80mm çaplı pnömatik silindir için standart ürün öner. Strok 200mm."},
+      {r:"ai",d:1200,t:'SMC CDJ2B80-200 öneriyorum ✓ · Stokta · 3 gün teslimat<br><span style="color:#F5C87A">⚠ P-003\'te flanş bağlantı sorunu yaşandı</span> — alternatif göstereyim mi?'},
+    ],
+    vis:()=>`<div class="dw-pcard"><div class="dw-pcard-hdr"><span class="dw-pname" style="font-size:11px;">SMC CDJ2B80-200</span><span class="dw-st active">Önerilen</span></div><div class="dw-meta" style="margin-top:4px;">Ø80mm · 200mm strok · Stokta mevcut</div></div><div class="dw-notif show"><div class="dw-ni" style="background:rgba(255,193,7,0.15);">💡</div><div><div class="dw-nt">Geçmiş Deneyim — P-003</div><div class="dw-nb">Aynı model kullanıldı, flanş bağlantı sorunu yaşandı. Alternatif önerilebilir.</div></div></div>`,
+  },
+  {
+    pill:"⚙️ İmalat", projTag:"ALP-2026", userTag:"Emre · İmalat", visHdr:"İMALAT TAKİP",
+    msgs:[
+      {r:"user",av:"E",ac:"iml",t:"T-001 şaft için teknik resim toleransları ve Ra değeri ne olmalı?"},
+      {r:"ai",d:1200,t:'T-001 parametreler:<br><span style="color:#7BA4F8">Çap:</span> Ø50 h6 (±0.016mm) · <span style="color:#7BA4F8">Ra:</span> 1.6μm · <span style="color:#7BA4F8">Sertlik:</span> 40-45 HRC<br><span style="color:#F5C87A">Not:</span> Montaj geri bildirimi var — toleransı gözden geçir'},
+    ],
+    vis:()=>`<div class="dw-pcard"><div class="dw-pcard-hdr"><span class="dw-pname" style="font-size:11px;">T-001 Şaft — Teknik</span></div><div style="display:flex;flex-direction:column;gap:4px;margin-top:6px;">${[["Çap","Ø50 h6"],["Tolerans","±0.016 mm"],["Yüzey Ra","1.6 μm"],["Sertlik","40-45 HRC"]].map(r=>`<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:#6B7280;">${r[0]}</span><span style="color:#7BA4F8;font-weight:500;">${r[1]}</span></div>`).join('')}</div></div>`,
+  },
+  {
+    pill:"🚚 Sevk & Döküman", projTag:"ALP-2026", userTag:"Alper · Tasarım · Lider", visHdr:"DÖKÜMANLAR",
+    msgs:[
+      {r:"user",av:"A",ac:"usr",t:"Sevk rehberi, otomasyon senaryosu, kullanım kılavuzu ve yedek parça listesini hazırla."},
+      {r:"ai",d:1500,t:'4 döküman oluşturuldu ✓<br>Proje verisinden otomatik üretildi — Word & PDF indirilebilir 📄'},
+    ],
+    vis:()=>`${[["📦","Sevk & Kurulum Rehberi","v1.0 · PDF"],["⚡","Otomasyon Senaryosu","v1.0 · Word"],["📗","Kullanım Kılavuzu","v1.0 · PDF"],["🔧","Yedek Parça Listesi","v1.0 · Excel"]].map((d,i)=>`<div class="dw-doc" id="dd${i}"><div class="dw-doc-ic">${d[0]}</div><div><div class="dw-doc-nm">${d[1]}</div><div class="dw-doc-mt">${d[2]}</div></div><div style="font-size:10px;color:#7BA4F8;margin-left:auto;">⬇</div></div>`).join('')}`,
+    onShow:()=>{[0,1,2,3].forEach(i=>setTimeout(()=>{const e=document.getElementById('dd'+i);if(e)e.classList.add('show');},150+i*220));}
+  },
+];
+
+let cur=0, playing=true, progTimer=null, progVal=0;
+const DUR=7500, INT=50;
+
+function buildWidget() {
+  const el = document.getElementById('demoShellInner');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="dw-topbar">
+      <div class="dw-dots"><div class="dw-dot r"></div><div class="dw-dot y"></div><div class="dw-dot g"></div></div>
+      <span class="dw-title">Yapay İmalat Asistanı — v11.98</span>
+      <span class="dw-live">● CANLI</span>
+    </div>
+    <div class="dw-scbar" id="dwScBar"></div>
+    <div class="dw-progress-wrap"><div class="dw-progress" id="dwProg"></div></div>
+    <div class="dw-split">
+      <div class="dw-chat">
+        <div class="dw-chat-hdr">
+          <div class="dw-proj-tag" id="dwProjTag">ALP-2026</div>
+          <div class="dw-user-tag" id="dwUserTag">Alper · Lider</div>
+        </div>
+        <div class="dw-msgs" id="dwMsgs"></div>
+        <div class="dw-typing" id="dwTyping">
+          <div style="display:flex;gap:7px;align-items:flex-end;">
+            <div class="dw-av ai">AI</div>
+            <div class="dw-tdots"><div class="dw-td"></div><div class="dw-td"></div><div class="dw-td"></div></div>
+          </div>
+        </div>
+        <div class="dw-input-bar">
+          <div style="width:18px;height:18px;background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#4B5563" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <div class="dw-input-txt" id="dwInput"><span class="dw-cursor"></span></div>
+          <div class="dw-send"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+        </div>
+      </div>
+      <div class="dw-visual">
+        <div class="dw-vis-hdr" id="dwVisHdr">SONUÇ</div>
+        <div class="dw-vis-content" id="dwVisContent"></div>
+      </div>
+    </div>
+    <div class="dw-bottom">
+      <div class="dw-sc-lbl">Sahne <span id="dwScNum">1</span> / <span id="dwScTot">${scenes.length}</span></div>
+      <button class="dw-btn" onclick="dwPrev()">‹</button>
+      <button class="dw-btn play" onclick="dwToggle()" id="dwPlayBtn">⏸</button>
+      <button class="dw-btn" onclick="dwNext()">›</button>
+    </div>`;
+  buildPills();
+  loadScene(0);
+}
+
+function buildPills() {
+  const bar = document.getElementById('dwScBar');
+  if (!bar) return;
+  bar.innerHTML = scenes.map((s,i)=>`<div class="dw-pill${i===0?' active':''}" id="dwp${i}" onclick="dwGo(${i})">${s.pill}</div>`).join('');
+}
+
+async function runScene(idx) {
+  const s = scenes[idx];
+  const set = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  const setH = (id,v) => { const e=document.getElementById(id); if(e) e.innerHTML=v; };
+  set('dwProjTag', s.projTag);
+  set('dwUserTag', s.userTag);
+  set('dwVisHdr', s.visHdr);
+  set('dwScNum', idx+1);
+  document.querySelectorAll('.dw-pill').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  setH('dwMsgs','');
+  setH('dwVisContent','');
+  setH('dwInput','<span class="dw-cursor"></span>');
+  document.getElementById('dwTyping').style.display='none';
+  const msgs = document.getElementById('dwMsgs');
+
+  for (const m of s.msgs) {
+    if (m.r === 'user') {
+      await typeInto(m.t);
+      await sleep(180);
+      appendMsg(msgs, m.av||'A', m.ac||'usr', m.t, 'user');
+      setH('dwInput','<span class="dw-cursor"></span>');
+    } else {
+      if (m.d > 0) {
+        document.getElementById('dwTyping').style.display='block';
+        msgs.scrollTop=9999;
+        await sleep(m.d);
+        document.getElementById('dwTyping').style.display='none';
+      }
+      appendMsg(msgs,'AI','ai',m.t,'ai');
+    }
+    msgs.scrollTop=9999;
+    await sleep(350);
+  }
+  setH('dwVisContent', s.vis());
+  if (s.onShow) s.onShow();
+}
+
+function appendMsg(c,av,ac,t,type) {
+  const row=document.createElement('div');
+  row.className=`dw-row${type==='user'?' u':''}`;
+  const avEl=`<div class="dw-av ${ac}">${av}</div>`;
+  const bbl=`<div class="dw-bubble ${type==='ai'?'ai':'user'}">${t}</div>`;
+  row.innerHTML=type==='user'?bbl+avEl:avEl+bbl;
+  c.appendChild(row);
+}
+
+async function typeInto(text) {
+  const d=document.getElementById('dwInput');
+  const sh=text.length>46?text.substring(0,43)+'...':text;
+  let out='';
+  for(const c of sh.split('')){
+    out+=c;
+    if(d) d.innerHTML=out+'<span class="dw-cursor"></span>';
+    await sleep(22+Math.random()*18);
+  }
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+function startProg() {
+  clearInterval(progTimer); progVal=0;
+  const pb=document.getElementById('dwProg');
+  if(pb) pb.style.width='0%';
+  progTimer=setInterval(()=>{
+    progVal+=(INT/DUR)*100;
+    const pb=document.getElementById('dwProg');
+    if(pb) pb.style.width=Math.min(progVal,100)+'%';
+    if(progVal>=100){
+      clearInterval(progTimer);
+      if(playing){cur=(cur+1)%scenes.length;loadScene(cur);}
+    }
+  },INT);
+}
+
+function loadScene(idx){
+  cur=idx; clearInterval(progTimer);
+  runScene(idx).then(()=>{if(playing)startProg();});
+}
+
+window.dwGo=(idx)=>{clearInterval(progTimer);loadScene(idx);};
+window.dwNext=()=>dwGo((cur+1)%scenes.length);
+window.dwPrev=()=>dwGo((cur-1+scenes.length)%scenes.length);
+window.dwToggle=()=>{
+  playing=!playing;
+  const btn=document.getElementById('dwPlayBtn');
+  if(btn) btn.textContent=playing?'⏸':'▶';
+  if(playing)startProg();else clearInterval(progTimer);
+};
+
+// Init when DOM ready
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',buildWidget);
+} else {
+  buildWidget();
+}
+})();
+</script>
+</body>
+</html>
