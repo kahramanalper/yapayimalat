@@ -7,15 +7,25 @@ module.exports = async function handler(req, res) {
 
   const { ad_soyad, email, telefon, sirket, calisan_sayisi, plan, mesaj } = req.body;
 
+  // Değer "Başlangıç" şeklinde tırnaklı geliyorsa JSON.parse ile temizle
+  function temizle(deger) {
+    if (!deger) return null;
+    let s = String(deger).trim();
+    // Eğer tırnak içindeyse JSON parse et: '"Başlangıç"' → 'Başlangıç'
+    try { s = JSON.parse(s); } catch(e) {}
+    return String(s).trim() || null;
+  }
+
+  const cleanPlan          = temizle(plan);
+  const cleanCalisanSayisi = temizle(calisan_sayisi);
+
   console.log('--- YENİ FORM GÖNDERİMİ ---');
   console.log('Ad Soyad:', ad_soyad);
   console.log('Sirket:', sirket);
-  console.log('Plan ham:', JSON.stringify(plan));
-  console.log('Calisan ham:', JSON.stringify(calisan_sayisi));
+  console.log('Plan ham:', JSON.stringify(plan), '→ temiz:', cleanPlan);
+  console.log('Calisan ham:', JSON.stringify(calisan_sayisi), '→ temiz:', cleanCalisanSayisi);
 
   try {
-    // Sadece text alanlarını gönder — Single Select alanları (Plan, Çalışan Sayısı, Durum) çıkarıldı
-    // Önce sistemin çalıştığını doğrulayalım
     const fields = {
       'Şirket Adı':      sirket    || '',
       'Ad Soyad':        ad_soyad  || '',
@@ -23,7 +33,11 @@ module.exports = async function handler(req, res) {
       'Telefon':         telefon   || '',
       'Mesaj':           mesaj     || '',
       'Trial Başlangıç': new Date().toISOString().split('T')[0],
+      'Durum':           'Demo Bekleniyor',
     };
+
+    if (cleanPlan)          fields['Plan']            = cleanPlan;
+    if (cleanCalisanSayisi) fields['Çalışan Sayısı']  = cleanCalisanSayisi;
 
     console.log('Gonderilen fields:', JSON.stringify(fields, null, 2));
 
