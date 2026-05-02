@@ -34,8 +34,10 @@ export default async function handler(req, res) {
       }
     );
 
-    if (!airtableRes.ok) throw new Error('Airtable hatası');
-
+   if (!airtableRes.ok) {
+  const errBody = await airtableRes.text();
+  throw new Error(errBody);
+}
     res.status(200).json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
