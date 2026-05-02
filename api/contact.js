@@ -24,7 +24,7 @@ export default async function handler(req, res) {
             'Ad Soyad': ad_soyad,
             'E-posta': email,
             'Telefon': telefon,
-            'Plan': cleanPlan,
+            
             '\u00c7al\u0131\u015fan Say\u0131s\u0131': calisan_sayisi,
             'Mesaj': mesaj,
             'Trial Ba\u015flang\u0131\u00e7': new Date().toISOString().split('T')[0],
