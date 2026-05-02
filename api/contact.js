@@ -40,7 +40,7 @@ module.exports = async function handler(req, res) {
       'Telefon':         telefon   || '',
       'Mesaj':           mesaj     || '',
       'Trial Başlangıç': new Date().toISOString().split('T')[0],
-      'Durum':           { name: 'Demo Bekleniyor' },
+      'Durum': 'Demo Bekleniyor',
     };
 
     // Plan boş gelmediyse { name: '...' } formatında ekle
