@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -530,8 +530,8 @@ footer { padding: 32px 6%; border-top: 1px solid var(--border); display: flex; j
           <div class="cfield"><label>Şirket Adı *</label><input type="text" name="sirket" placeholder="Firma A.Ş." required/></div>
         </div>
         <div class="crow2">
-          <div class="cfield"><label>Çalışan Sayısı</label><select name="calisan_sayisi"><option value="">Seçiniz</option><option>1–10 kişi</option><option>11–50 kişi</option><option>51–200 kişi</option><option>200+ kişi</option></select></div>
-          <div class="cfield"><label>İlgilendiğiniz Plan</label><select name="plan"><option value="">Seçiniz</option><option>Başlangıç</option><option>Büyüme</option><option>Kurumsal</option><option>Henüz karar vermedim</option></select></div>
+          <div class="cfield"><label>Çalışan Sayısı</label><select name="calisan_sayisi"><option value="">Seçiniz</option><option value="1–10 kişi">1–10 kişi</option><option value="11–50 kişi">11–50 kişi</option><option value="51–200 kişi">51–200 kişi</option><option value="200+ kişi">200+ kişi</option></select></div>
+          <div class="cfield"><label>İlgilendiğiniz Plan</label><select name="plan"><option value="">Seçiniz</option><option value="Başlangıç">Başlangıç</option><option value="Büyüme">Büyüme</option><option value="Kurumsal">Kurumsal</option><option value="Henüz karar vermedim">Henüz karar vermedim</option></select></div>
         </div>
         <div class="cfield"><label>Mesajınız</label><textarea name="mesaj" placeholder="Üretim süreciniz, beklentileriniz veya merak ettiklerinizi yazın..."></textarea></div>
         <button type="submit" class="csubmit" id="submitBtn">Demo Talep Et →</button>
@@ -675,7 +675,7 @@ function submitContact() {
   document.getElementById('csuccess').style.display = 'block';
 }
 
-// Formspree form submit
+// Form submit → Vercel API → Airtable
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
   contactForm.addEventListener('submit', async function(e) {
@@ -684,22 +684,29 @@ if (contactForm) {
     btn.textContent = 'Gönderiliyor...';
     btn.disabled = true;
     try {
+      // FormData'yı düz objeye çevir — böylece değerler tırnaksız, temiz JSON olarak gidiyor
       const formData = new FormData(contactForm);
-const formObj = Object.fromEntries(formData.entries());
+      const formObj = Object.fromEntries(formData.entries());
 
-const response = await fetch('/api/contact', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         body: JSON.stringify(formObj),
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
       });
       if (response.ok) {
         document.getElementById('cform-demo').classList.remove('show');
         document.getElementById('csuccess').style.display = 'block';
       } else {
+        const errData = await response.json().catch(() => ({}));
+        console.error('API hatası:', errData);
         btn.textContent = 'Hata oluştu, tekrar dene';
         btn.disabled = false;
       }
-    } catch {
+    } catch (err) {
+      console.error('Fetch hatası:', err);
       btn.textContent = 'Hata oluştu, tekrar dene';
       btn.disabled = false;
     }
