@@ -7,6 +7,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { ad_soyad, email, telefon, sirket, calisan_sayisi, plan, mesaj } = req.body;
+  const cleanPlan = plan ? plan.replace(/['"]/g, '').trim() : '';
 
   try {
     const airtableRes = await fetch(
@@ -23,7 +24,7 @@ export default async function handler(req, res) {
             'Ad Soyad': ad_soyad,
             'E-posta': email,
             'Telefon': telefon,
-            'Plan': plan,
+            'Plan': cleanPlan,
             '\u00c7al\u0131\u015fan Say\u0131s\u0131': calisan_sayisi,
             'Mesaj': mesaj,
             'Trial Ba\u015flang\u0131\u00e7': new Date().toISOString().split('T')[0],
