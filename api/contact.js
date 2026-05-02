@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   try {
     // Airtable'a kayıt
     const airtableRes = await fetch(
-      'https://api.airtable.com/v0/appE6eca0FMKhIPX7/Müşteriler',
+     'https://api.airtable.com/v0/appE6eca0FMKhIPX7/M%C3%BC%C5%9Fteriler',
       {
         method: 'POST',
         headers: {
