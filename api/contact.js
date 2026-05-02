@@ -40,17 +40,17 @@ module.exports = async function handler(req, res) {
       'Telefon':         telefon   || '',
       'Mesaj':           mesaj     || '',
       'Trial Başlangıç': new Date().toISOString().split('T')[0],
-      'Durum': 'Demo Bekleniyor',
+      'Durum':           { name: 'Demo Bekleniyor' },
     };
 
-    // Plan boş gelmediyse { name: '...' } formatında ekle
+    // Plan boş gelmediyse düz string olarak ekle
     if (cleanPlan) {
-      fields['Plan'] = { name: cleanPlan };
+      fields['Plan'] = cleanPlan;
     }
 
-    // Çalışan Sayısı boş gelmediyse { name: '...' } formatında ekle
+    // Çalışan Sayısı boş gelmediyse düz string olarak ekle
     if (cleanCalisanSayisi) {
-      fields['Çalışan Sayısı'] = { name: cleanCalisanSayisi };
+      fields['Çalışan Sayısı'] = cleanCalisanSayisi;
     }
 
     console.log('Airtable a gonderilen fields:', JSON.stringify(fields, null, 2));
