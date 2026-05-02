@@ -19,14 +19,14 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           fields: {
-            'Sirket Adi': sirket,
+            '\u015eirket Ad\u0131': sirket,
             'Ad Soyad': ad_soyad,
             'E-posta': email,
             'Telefon': telefon,
             'Plan': plan,
-            'Calisan Sayisi': calisan_sayisi,
+            '\u00c7al\u0131\u015fan Say\u0131s\u0131': calisan_sayisi,
             'Mesaj': mesaj,
-            'Trial Baslangic': new Date().toISOString().split('T')[0],
+            'Trial Ba\u015flang\u0131\u00e7': new Date().toISOString().split('T')[0],
             'Durum': 'Demo Bekleniyor',
           },
         }),
