@@ -7,6 +7,10 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { ad_soyad, email, telefon, sirket, calisan_sayisi, plan, mesaj } = req.body;
+  console.log('Plan raw value:', JSON.stringify(plan));
+console.log('Plan type:', typeof plan);
+
+const cleanPlan = ...
   const cleanPlan = plan ? String(plan).replace(/^["']+|["']+$/g, '').trim() : null;
   try {
     const airtableRes = await fetch(
