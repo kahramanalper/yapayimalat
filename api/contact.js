@@ -1,16 +1,28 @@
 module.exports = async function handler(req, res) {
+  // CORS ayarları — tarayıcının bu API'ye erişmesine izin verir
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Tarayıcı bazen OPTIONS isteği atar, bunu boş 200 ile geçiştiriyoruz
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end();
 
+  // Formdan gelen alanları al
   const { ad_soyad, email, telefon, sirket, calisan_sayisi, plan, mesaj } = req.body;
 
-  console.log('Plan raw value:', JSON.stringify(plan));
-  console.log('Plan type:', typeof plan);
+  // Plan değerini temizle — eğer tırnak içinde geldiyse soyuyoruz
+  // Örnek sorun: "Başlangıç" → Başlangıç
+  const cleanPlan = plan
+    ? String(plan).replace(/^["'\s]+|["'\s]+$/g, '').trim()
+    : null;
 
-  const cleanPlan = plan ? String(plan).replace(/^["']+|["']+$/g, '').trim() : null;
+  // Log satırları — Vercel Dashboard > Logs'ta görebilirsin
+  console.log('--- YENİ FORM GÖNDERİMİ ---');
+  console.log('Ad Soyad:', ad_soyad);
+  console.log('Şirket:', sirket);
+  console.log('Plan ham değer:', JSON.stringify(plan));
+  console.log('Plan temiz değer:', cleanPlan);
 
   try {
     const airtableRes = await fetch(
@@ -23,28 +35,35 @@ module.exports = async function handler(req, res) {
         },
         body: JSON.stringify({
           fields: {
-            '\u015eirket Ad\u0131': sirket,
-            'Ad Soyad': ad_soyad,
-            'E-posta': email,
-            'Telefon': telefon,
-            ...(cleanPlan && { 'Plan': cleanPlan }),
-            '\u00c7al\u0131\u015fan Say\u0131s\u0131': calisan_sayisi,
-            'Mesaj': mesaj,
-            'Trial Ba\u015flang\u0131\u00e7': new Date().toISOString().split('T')[0],
-            'Durum': 'Demo Bekleniyor',
+            'Şirket Adı':    sirket        || '',
+            'Ad Soyad':      ad_soyad      || '',
+            'E-posta':       email         || '',
+            'Telefon':       telefon       || '',
+            'Çalışan Sayısı': calisan_sayisi || '',
+            'Mesaj':         mesaj         || '',
+            'Trial Başlangıç': new Date().toISOString().split('T')[0],
+            'Durum':         'Demo Bekleniyor',
+            // Plan alanı — eğer boş geldiyse hiç gönderme (Airtable hata verir)
+            ...(cleanPlan ? { 'Plan': cleanPlan } : {}),
           },
         }),
       }
     );
+
     const responseText = await airtableRes.text();
-    console.log('Airtable status:', airtableRes.status);
-    console.log('Airtable response:', responseText);
+    console.log('Airtable HTTP status:', airtableRes.status);
+    console.log('Airtable yanıt:', responseText);
+
     if (!airtableRes.ok) {
-      return res.status(500).json({ error: responseText });
+      // Airtable hata döndürdü — detayı logluyoruz ve client'a da gönderiyoruz
+      return res.status(500).json({ error: 'Airtable hatası', detail: responseText });
     }
-    res.status(200).json({ success: true });
+
+    // Her şey yolunda
+    return res.status(200).json({ success: true });
+
   } catch (err) {
-    console.log('Catch error:', err.message);
-    res.status(500).json({ error: err.message });
+    console.log('Sunucu hatası:', err.message);
+    return res.status(500).json({ error: err.message });
   }
-}
+};
