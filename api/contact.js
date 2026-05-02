@@ -12,19 +12,49 @@ module.exports = async function handler(req, res) {
   const { ad_soyad, email, telefon, sirket, calisan_sayisi, plan, mesaj } = req.body;
 
   // Plan değerini temizle — eğer tırnak içinde geldiyse soyuyoruz
-  // Örnek sorun: "Başlangıç" → Başlangıç
   const cleanPlan = plan
     ? String(plan).replace(/^["'\s]+|["'\s]+$/g, '').trim()
+    : null;
+
+  // Çalışan sayısını temizle
+  const cleanCalisanSayisi = calisan_sayisi
+    ? String(calisan_sayisi).replace(/^["'\s]+|["'\s]+$/g, '').trim()
     : null;
 
   // Log satırları — Vercel Dashboard > Logs'ta görebilirsin
   console.log('--- YENİ FORM GÖNDERİMİ ---');
   console.log('Ad Soyad:', ad_soyad);
-  console.log('Şirket:', sirket);
-  console.log('Plan ham değer:', JSON.stringify(plan));
-  console.log('Plan temiz değer:', cleanPlan);
+  console.log('Sirket:', sirket);
+  console.log('Plan ham deger:', JSON.stringify(plan));
+  console.log('Plan temiz deger:', cleanPlan);
+  console.log('Calisan Sayisi temiz:', cleanCalisanSayisi);
 
   try {
+    // ÖNEMLİ: Airtable'da "Single Select" tipindeki alanlara düz string değil,
+    // { name: 'değer' } formatında göndermek gerekiyor.
+    // Plan, Çalışan Sayısı ve Durum alanları Single Select — bu yüzden { name: ... } kullanıyoruz.
+    const fields = {
+      'Şirket Adı':      sirket    || '',
+      'Ad Soyad':        ad_soyad  || '',
+      'E-posta':         email     || '',
+      'Telefon':         telefon   || '',
+      'Mesaj':           mesaj     || '',
+      'Trial Başlangıç': new Date().toISOString().split('T')[0],
+      'Durum':           { name: 'Demo Bekleniyor' },
+    };
+
+    // Plan boş gelmediyse { name: '...' } formatında ekle
+    if (cleanPlan) {
+      fields['Plan'] = { name: cleanPlan };
+    }
+
+    // Çalışan Sayısı boş gelmediyse { name: '...' } formatında ekle
+    if (cleanCalisanSayisi) {
+      fields['Çalışan Sayısı'] = { name: cleanCalisanSayisi };
+    }
+
+    console.log('Airtable a gonderilen fields:', JSON.stringify(fields, null, 2));
+
     const airtableRes = await fetch(
       'https://api.airtable.com/v0/appE6eca0FMKhIPX7/M%C3%BC%C5%9Fteriler',
       {
@@ -33,37 +63,22 @@ module.exports = async function handler(req, res) {
           'Authorization': `Bearer ${process.env.AIRTABLE_TOKEN}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          fields: {
-            'Şirket Adı':    sirket        || '',
-            'Ad Soyad':      ad_soyad      || '',
-            'E-posta':       email         || '',
-            'Telefon':       telefon       || '',
-            'Çalışan Sayısı': calisan_sayisi || '',
-            'Mesaj':         mesaj         || '',
-            'Trial Başlangıç': new Date().toISOString().split('T')[0],
-            'Durum':         'Demo Bekleniyor',
-            // Plan alanı — eğer boş geldiyse hiç gönderme (Airtable hata verir)
-            ...(cleanPlan ? { 'Plan': cleanPlan } : {}),
-          },
-        }),
+        body: JSON.stringify({ fields }),
       }
     );
 
     const responseText = await airtableRes.text();
     console.log('Airtable HTTP status:', airtableRes.status);
-    console.log('Airtable yanıt:', responseText);
+    console.log('Airtable yanit:', responseText);
 
     if (!airtableRes.ok) {
-      // Airtable hata döndürdü — detayı logluyoruz ve client'a da gönderiyoruz
-      return res.status(500).json({ error: 'Airtable hatası', detail: responseText });
+      return res.status(500).json({ error: 'Airtable hatasi', detail: responseText });
     }
 
-    // Her şey yolunda
     return res.status(200).json({ success: true });
 
   } catch (err) {
-    console.log('Sunucu hatası:', err.message);
+    console.log('Sunucu hatasi:', err.message);
     return res.status(500).json({ error: err.message });
   }
 };
