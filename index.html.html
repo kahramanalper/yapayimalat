@@ -687,7 +687,7 @@ if (contactForm) {
       const formData = new FormData(contactForm);
 const formObj = Object.fromEntries(formData.entries());
 
-const response = await fetch('https://primary-production-789ae.up.railway.app/webhook/yapayimalat-form', {
+const response = await fetch('/api/contact', {
         method: 'POST',
         body: JSON.stringify(formObj),
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
